@@ -1,10 +1,7 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+const fs = require("fs");
+const path = require("path");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DATA_FILE = path.join(__dirname, "..", "..", "data", "users.json");
+const DATA_FILE = path.join(__dirname, "..", "..", "Data", "login.json");
 
 function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
@@ -25,7 +22,7 @@ function writeUsers(users) {
 }
 
 // POST /api/auth/signup
-export const signup = (req, res) => {
+const signup = (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: "All fields are required" });
@@ -50,7 +47,7 @@ export const signup = (req, res) => {
 };
 
 // POST /api/auth/signin
-export const signin = (req, res) => {
+const signin = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -67,8 +64,10 @@ export const signin = (req, res) => {
 };
 
 // GET /api/auth/users
-export const getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => {
   const users = readUsers();
   const safe = users.map(({ password, ...rest }) => rest);
   res.json(safe);
 };
+
+module.exports = { signup, signin, getAllUsers };

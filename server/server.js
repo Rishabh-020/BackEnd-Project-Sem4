@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import authRoutes from "./src/routes/auth1.routes.js";  // ← ADD THIS
+const express=require('express')
+const cors =require("cors");
+const dotenv = require( "dotenv");
+const authRoutes =require( "./src/routes/auth.routes.js") // ← ADD THIS
 
 dotenv.config();
 const app = express();
