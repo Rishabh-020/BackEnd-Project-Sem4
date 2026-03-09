@@ -9,19 +9,16 @@ function ensureDataFile() {
   if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "[]");
 }
 
-// Read users array from JSON file
 function readUsers() {
   ensureDataFile();
   return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 }
 
-// Write users array back to JSON file
 function writeUsers(users) {
   ensureDataFile();
   fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
 }
 
-// POST /api/auth/signup
 const signup = (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -46,7 +43,6 @@ const signup = (req, res) => {
   });
 };
 
-// POST /api/auth/signin
 const signin = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -63,11 +59,49 @@ const signin = (req, res) => {
   });
 };
 
-// GET /api/auth/users
 const getAllUsers = (req, res) => {
   const users = readUsers();
   const safe = users.map(({ password, ...rest }) => rest);
   res.json(safe);
 };
 
-module.exports = { signup, signin, getAllUsers };
+const updateUser = (req, res) => {
+  const id = Number(req.params.id);
+  const { name, email, password } = req.body;
+
+  const users = readUsers();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  if (email && email !== users[index].email) {
+    if (users.find((u) => u.email === email && u.id !== id)) {
+      return res.status(409).json({ error: "Email already in use" });
+    }
+  }
+
+  if (name) users[index].name = name;
+  if (email) users[index].email = email;
+  if (password) users[index].password = password;
+
+  writeUsers(users);
+  const { password: _, ...safe } = users[index];
+  res.json({ message: "User updated successfully", user: safe });
+};
+
+const deleteUser = (req, res) => {
+  const id = Number(req.params.id);
+
+  const users = readUsers();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  users.splice(index, 1);
+  writeUsers(users);
+  res.json({ message: "User deleted successfully" });
+};
+
+module.exports = { signup, signin, getAllUsers, updateUser, deleteUser };
