@@ -1,3 +1,8 @@
+const app = require("./src/app");
+
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
 // const express = require("express");
 // const cors = require("cors");
 // const dotenv = require("dotenv");
