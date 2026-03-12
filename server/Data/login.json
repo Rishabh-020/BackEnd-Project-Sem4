@@ -1,9 +1,25 @@
 [
   {
+<<<<<<< HEAD
     "id": 1773142107018,
     "name": "kunal",
     "email": "kunal@gmail.com",
     "password": "123456",
     "createdAt": "2026-03-10T11:28:27.018Z"
+=======
+ 
+    "id": 1773062300784,
+    "name": "Secound",
+    "email": "Secound@gmail.com",
+    "password": "1221",
+    "createdAt": "2026-03-09T13:18:20.784Z"
+  },
+  {
+    "id": 1773075985523,
+    "name": "first",
+    "email": "first@gmail.com",
+    "password": "1122",
+    "createdAt": "2026-03-09T17:06:25.523Z"
+>>>>>>> e8be43d2e469d4cdf9d07caeea26fbaa84773195
   }
 ]
