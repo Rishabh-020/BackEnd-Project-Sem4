@@ -8,8 +8,6 @@ const contactRoutes = require("./src/routes/contact.routes.js"); // ✅ FIXED
 
 dotenv.config();
 
-const app = express();
-
 app.use(cors());
 app.use(express.json());
 
