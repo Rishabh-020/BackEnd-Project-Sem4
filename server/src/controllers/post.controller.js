@@ -57,7 +57,7 @@ function updatePost(req, res) {
   const id = Number(req.params.id);
   const { title, description, image, author } = req.body;
   if (!isValidUser(author))
-    return res.status(401).send({ message: "Invalid user" });
+    return res.status(401).send({ message: "Invalid user" }); 
 
   const posts = getPosts();
   const post = posts.find((p) => p.id === id);
