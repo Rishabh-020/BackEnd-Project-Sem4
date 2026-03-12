@@ -17,7 +17,6 @@ const path = require("path");
 
 // Generic read function
 const readFile = (filePath) => {
-  // create file if not exists
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, "[]");
   }

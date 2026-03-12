@@ -22,5 +22,13 @@
     "image": "https://example.com/goa.jpg",
     "author": "test@gmail.com",
     "createdAt": "2026-03-09T19:29:24.990Z"
+  },
+  {
+    "id": 1773142687188,
+    "title": "Trip to Testing",
+    "description": "Beautiful beaches and sunset",
+    "image": "https://testing.com/goa.jpg",
+    "author": "first@gmail.com",
+    "createdAt": "2026-03-10T11:38:07.188Z"
   }
 ]
