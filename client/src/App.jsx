@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,21 +10,24 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 
-export default function App() {
-  const [user, setUser] = useState(null);
+const CURRENT_USER_KEY = "wandersphere_current_user";
 
-  useEffect(() => {
-    const raw =
-      localStorage.getItem("wandersphere_current_user") ||
-      sessionStorage.getItem("wandersphere_current_user");
-    if (raw) {
-      try {
-        setUser(JSON.parse(raw));
-      } catch {
-        setUser(null);
-      }
-    }
-  }, []);
+const readCurrentUser = () => {
+  const raw =
+    localStorage.getItem(CURRENT_USER_KEY) ||
+    sessionStorage.getItem(CURRENT_USER_KEY);
+
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+export default function App() {
+  const [user, setUser] = useState(() => readCurrentUser());
 
   return (
     <>

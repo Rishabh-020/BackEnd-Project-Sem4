@@ -1,21 +1,12 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-export default function Header({ user, setUser }) {
+export default function Header({ user }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleAuthClick = () => {
-    if (user) {
-      // Logout
-      localStorage.removeItem("wandersphere_current_user");
-      sessionStorage.removeItem("wandersphere_current_user");
-      setUser(null);
-      navigate("/login");
-    } else {
-      // Go to login
-      navigate("/login");
-    }
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   const handleProfileClick = () => {
@@ -55,7 +46,11 @@ export default function Header({ user, setUser }) {
 
             {user && (
               <li>
-                <button className="profile-btn" onClick={handleProfileClick}>
+                <button
+                  type="button"
+                  className="profile-btn"
+                  onClick={handleProfileClick}
+                >
                   <img
                     src={user.profilePicture || "/default-avatar.svg"}
                     alt="Profile"
@@ -69,11 +64,17 @@ export default function Header({ user, setUser }) {
               </li>
             )}
 
-            <li id="auth-nav-item">
-              <button className="login-btn" onClick={handleAuthClick}>
-                {user ? "Logout" : "Login / Sign Up"}
-              </button>
-            </li>
+            {!user && (
+              <li id="auth-nav-item">
+                <button
+                  type="button"
+                  className="login-btn"
+                  onClick={handleLoginClick}
+                >
+                  Login / Sign Up
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
 
