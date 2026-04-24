@@ -1,18 +1,19 @@
 [
   {
-<<<<<<< HEAD
     "id": 1773142107018,
     "name": "kunal",
     "email": "kunal@gmail.com",
     "password": "123456",
     "createdAt": "2026-03-10T11:28:27.018Z"
-=======
- 
+  },
+  {
     "id": 1773062300784,
     "name": "Secound",
     "email": "Secound@gmail.com",
     "password": "1221",
-    "createdAt": "2026-03-09T13:18:20.784Z"
+    "createdAt": "2026-03-09T13:18:20.784Z",
+    "lastLoginAt": "2026-04-23T06:03:58.693Z",
+    "loginCount": 1
   },
   {
     "id": 1773075985523,
@@ -20,6 +21,16 @@
     "email": "first@gmail.com",
     "password": "1122",
     "createdAt": "2026-03-09T17:06:25.523Z"
->>>>>>> e8be43d2e469d4cdf9d07caeea26fbaa84773195
+  },
+  {
+    "id": 1776956103049,
+    "name": "now",
+    "email": "onetwo@gmail.com",
+    "password": "One@1234",
+    "createdAt": "2026-04-23T14:55:03.049Z",
+    "lastLoginAt": "2026-04-23T15:25:58.868Z",
+    "loginCount": 8,
+    "profilePicture": null,
+    "updatedAt": "2026-04-23T15:29:34.616Z"
   }
 ]

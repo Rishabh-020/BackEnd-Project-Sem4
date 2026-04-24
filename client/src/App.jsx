@@ -7,12 +7,16 @@ import VlogsPage from "./pages/Vlogs";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem("wandersphere_current_user");
+    const raw =
+      localStorage.getItem("wandersphere_current_user") ||
+      sessionStorage.getItem("wandersphere_current_user");
     if (raw) {
       try {
         setUser(JSON.parse(raw));
@@ -31,6 +35,8 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
+        <Route path="/settings" element={<Settings user={user} setUser={setUser} />} />
       </Routes>
       <Footer />
     </>

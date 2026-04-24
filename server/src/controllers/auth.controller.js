@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DATA_FILE = path.join(__dirname, "..", "..", "Data", "login.json");
+const UPLOADS_DIR = path.join(__dirname, "..", "..", "uploads", "profilePictures");
 
 function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
@@ -11,7 +12,13 @@ function ensureDataFile() {
 
 function readUsers() {
   ensureDataFile();
-  return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
+  try {
+    const raw = fs.readFileSync(DATA_FILE, "utf-8");
+    return JSON.parse(raw || "[]");
+  } catch (error) {
+    fs.writeFileSync(DATA_FILE, "[]");
+    return [];
+  }
 }
 
 function writeUsers(users) {
@@ -49,10 +56,21 @@ const signin = (req, res) => {
     return res.status(400).json({ error: "Email and password are required" });
   }
   const users = readUsers();
-  const user = users.find((u) => u.email === email && u.password === password);
+  const userIndex = users.findIndex((u) => u.email === email && u.password === password);
+  const user = users[userIndex];
   if (!user) {
     return res.status(401).json({ error: "Invalid email or password" });
   }
+
+  const updatedUser = {
+    ...user,
+    lastLoginAt: new Date().toISOString(),
+    loginCount: (user.loginCount || 0) + 1,
+  };
+
+  users[userIndex] = updatedUser;
+  writeUsers(users);
+
   res.json({
     message: "Sign in successful",
     user: { id: user.id, name: user.name, email: user.email },
@@ -104,4 +122,84 @@ const deleteUser = (req, res) => {
   res.json({ message: "User deleted successfully" });
 };
 
-module.exports = { signup, signin, getAllUsers, updateUser, deleteUser };
+const uploadProfilePicture = (req, res) => {
+  const id = Number(req.params.id);
+
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+
+  const users = readUsers();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  // Delete old profile picture if exists
+  if (users[index].profilePicture) {
+    const oldFilePath = path.join(__dirname, "../../uploads/profilePictures", path.basename(users[index].profilePicture));
+    if (fs.existsSync(oldFilePath)) {
+      fs.unlinkSync(oldFilePath);
+    }
+  }
+
+  // Save new profile picture path
+  const profilePictureUrl = `/uploads/profilePictures/${req.file.filename}`;
+  users[index].profilePicture = profilePictureUrl;
+  users[index].updatedAt = new Date().toISOString();
+
+  writeUsers(users);
+  const { password: _, ...safe } = users[index];
+  res.json({
+    message: "Profile picture uploaded successfully",
+    user: safe,
+  });
+};
+
+const getProfilePicture = (req, res) => {
+  const id = Number(req.params.id);
+
+  const users = readUsers();
+  const user = users.find((u) => u.id === id);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  if (!user.profilePicture) {
+    return res.status(404).json({ error: "Profile picture not found" });
+  }
+
+  res.json({ profilePicture: user.profilePicture });
+};
+
+const deleteProfilePicture = (req, res) => {
+  const id = Number(req.params.id);
+
+  const users = readUsers();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  if (!users[index].profilePicture) {
+    return res.status(404).json({ error: "No profile picture to delete" });
+  }
+
+  // Delete profile picture file
+  const filePath = path.join(__dirname, "../../uploads/profilePictures", path.basename(users[index].profilePicture));
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+
+  users[index].profilePicture = null;
+  users[index].updatedAt = new Date().toISOString();
+
+  writeUsers(users);
+  const { password: _, ...safe } = users[index];
+  res.json({
+    message: "Profile picture deleted successfully",
+    user: safe,
+  });
+};
+
+module.exports = { signup, signin, getAllUsers, updateUser, deleteUser, uploadProfilePicture, getProfilePicture, deleteProfilePicture };

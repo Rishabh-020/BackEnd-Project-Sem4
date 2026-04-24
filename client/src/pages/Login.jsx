@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../styles/login.css";
-
 import LoginTabs from "../components/Login/LoginTabs";
 import LoginForm from "../components/Login/LoginForm";
 import SignupForm from "../components/Login/SignupForm";
@@ -59,16 +58,21 @@ const Login = ({ setUser }) => {
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-  const getStoredUsers = () =>
-    JSON.parse(localStorage.getItem(USER_DATA_KEY)) || [];
-
   const saveUser = (user) =>
     localStorage.setItem(
       USER_DATA_KEY,
-      JSON.stringify([...getStoredUsers(), user])
+      JSON.stringify([...(JSON.parse(localStorage.getItem(USER_DATA_KEY)) || []), user])
     );
 
-  const handleSignup = (e) => {
+  const persistCurrentUser = (user, rememberMe) => {
+    localStorage.removeItem(CURRENT_USER_KEY);
+    sessionStorage.removeItem(CURRENT_USER_KEY);
+
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
     const { signupName, signupEmail, signupPassword, signupConfirmPassword } =
       form;
@@ -80,51 +84,92 @@ const Login = ({ setUser }) => {
       return showMessage("Password must be at least 6 chars", "error");
     if (signupPassword !== signupConfirmPassword)
       return showMessage("Passwords do not match", "error");
-    if (getStoredUsers().some((u) => u.email === signupEmail))
-      return showMessage("Email already registered", "error");
 
-    saveUser({
-      id: Date.now(),
-      name: signupName,
-      email: signupEmail,
-      password: signupPassword,
-    });
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: signupName,
+          email: signupEmail,
+          password: signupPassword,
+        }),
+      });
 
-    showMessage("Account created! Please login.");
+      const data = await response.json();
 
-    setForm((p) => ({
-      ...p,
-      signupName: "",
-      signupEmail: "",
-      signupPassword: "",
-      signupConfirmPassword: "",
-    }));
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Signup failed");
+      }
 
-    setActiveTab("login");
+      const newUser = data.user;
+      saveUser({
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      });
+
+      showMessage(data.message || "Account created! Please login.");
+
+      setForm((p) => ({
+        ...p,
+        signupName: "",
+        signupEmail: "",
+        signupPassword: "",
+        signupConfirmPassword: "",
+      }));
+
+      setActiveTab("login");
+    } catch (error) {
+      showMessage(
+        error.response?.data?.error || error.response?.data?.message || "Signup failed",
+        "error"
+      );
+    }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const { loginEmail, loginPassword, rememberMe } = form;
 
     if (!validateEmail(loginEmail))
       return showMessage("Enter valid email", "error");
 
-    const found = getStoredUsers().find(
-      (u) => u.email === loginEmail && u.password === loginPassword
-    );
+    try {
+      const response = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: loginEmail,
+          password: loginPassword,
+        }),
+      });
 
-    if (!found) return showMessage("Invalid email or password", "error");
+      const data = await response.json();
 
-    const storage = rememberMe ? localStorage : sessionStorage;
-    storage.setItem(CURRENT_USER_KEY, JSON.stringify(found));
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Invalid email or password");
+      }
 
-    setCurrentUser(found);
-    if (setUser) setUser(found);
+      const loggedUser = data.user;
+      persistCurrentUser(loggedUser, rememberMe);
 
-    showMessage("Login successful!");
+      setCurrentUser(loggedUser);
+      if (setUser) setUser(loggedUser);
 
-    setForm((p) => ({ ...p, loginEmail: "", loginPassword: "" }));
+      showMessage(data.message || "Login successful!");
+
+      setForm((p) => ({ ...p, loginEmail: "", loginPassword: "" }));
+    } catch (error) {
+      showMessage(
+        error.response?.data?.error || error.response?.data?.message || "Invalid email or password",
+        "error"
+      );
+    }
   };
 
   const handleLogout = () => {
