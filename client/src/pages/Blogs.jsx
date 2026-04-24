@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import FeaturedVlogs from "../components/Home/FeaturedVlogs";
 import CreateBlog from "../components/CreateBlog";
 import BlogCard from "../components/BlogCard";
 import "../styles/blog.css";
 
-export default function Vlogs({ user }) {
+export default function Blogs({ user }) {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   useEffect(() => {
+    console.log("Blogs page - User:", user); // Debug log
     fetchBlogs();
   }, []);
 
@@ -36,14 +36,9 @@ export default function Vlogs({ user }) {
   };
 
   return (
-    <div style={{ paddingTop: 100, paddingBottom: 80 }}>
+    <div className="blogs-page" style={{ paddingTop: 100, paddingBottom: 80 }}>
       <div className="container">
-        <h2 style={{ marginBottom: "1.5rem" }}>All Vlogs</h2>
-        <FeaturedVlogs />
-
-        <hr style={{ margin: "3rem 0", opacity: 0.3 }} />
-
-        <h2 style={{ marginBottom: "1.5rem" }}>Community Blogs</h2>
+        <h1 style={{ marginBottom: "2rem" }}>User Blogs</h1>
 
         {user ? (
           <>
