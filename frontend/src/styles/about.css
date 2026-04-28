@@ -1,0 +1,303 @@
+/* ----------------------------------------------------
+ GLOBAL BASE STYLES
+---------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Inheriting global theme variables from main.css */
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ----------------------------------------------------
+ HERO SECTION
+---------------------------------------------------- */
+.about-hero {
+  height: 450px; /* Fixed height to match others exactly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  color: white;
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.about-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(67, 97, 238, 0.25),
+    rgba(247, 37, 133, 0.25)
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-content h2 {
+  font-size: 3.2rem;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1.2s forwards;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1.2s forwards 0.2s;
+}
+
+/* ----------------------------------------------------
+ MISSION SECTION
+---------------------------------------------------- */
+.about-mission {
+  padding: 6rem 0;
+  text-align: center;
+  background: var(--bg-color);
+}
+
+.about-mission .section-title {
+  font-size: 2.6rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 750px;
+  margin: 1rem auto 3rem;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat h3 {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background-clip: text;
+  color: transparent;
+}
+
+.stat p {
+  color: var(--gray);
+  font-size: 1.1rem;
+}
+
+.about-team {
+  padding: 6rem 0;
+  background: var(--bg-color);
+  text-align: center;
+}
+
+/* container guard: allow grid to be full width */
+.container {
+  width: 100% !important;
+  max-width: 1300px !important;
+  margin: 0 auto !important;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.section-title {
+  font-size: 2.6rem;
+  color: var(--text-color);
+  margin-bottom: 0.6rem;
+}
+
+.team-intro {
+  max-width: 700px;
+  margin: 0 auto 1.6rem;
+  color: var(--text-muted);
+}
+
+/* FLEX GRID: 4 columns on desktop, resilient to overrides */
+.team-grid {
+  display: flex !important; /* force flex layout */
+  flex-wrap: nowrap !important; /* keep items in one row on desktop */
+  gap: 20px !important;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100% !important;
+}
+
+/* Each card takes up ~25% */
+.team-member {
+  flex: 0 1 calc((100% / 4) - 15px) !important; /* 4 columns, leaving space for gap */
+  max-width: calc((100% / 4) - 15px) !important;
+  min-width: 220px; /* prevents crushing too small */
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+}
+
+/* allow children to shrink nicely */
+.team-member * {
+  min-width: 0;
+}
+
+/* Hover */
+.team-member:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Member image */
+.member-image {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e6e6e6;
+}
+.member-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Text */
+.team-member h3 {
+  font-size: 1.15rem;
+  margin: 8px 0;
+  color: var(--text-color);
+}
+.role {
+  font-size: 0.98rem;
+  color: var(--primary, #4361ee);
+  margin-bottom: 8px;
+}
+.description {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ----------------------------------------------------
+ VALUES SECTION
+---------------------------------------------------- */
+
+.section-title-1{
+    color: #4361ee;
+    text-align: left;
+    margin-bottom: 2.5rem;
+     font-size: 2.6rem;
+}
+
+.about-values {
+  padding: 6rem 0;
+  background: var(--bg-color);
+  text-align: center;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.value {
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+}
+
+.value:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.value i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background-clip: text;
+  color: transparent;
+}
+
+.value h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.value p {
+  color: var(--gray);
+}
+
+/* ----------------------------------------------------
+ ANIMATIONS
+---------------------------------------------------- */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ----------------------------------------------------
+ RESPONSIVE BREAKPOINTS
+---------------------------------------------------- */
+
+/* BIG TABLET – 2 grid for team */
+@media (max-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE – 1 grid */
+@media (max-width: 600px) {
+  .hero-content h2 {
+    font-size: 2.2rem;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .value {
+    padding: 2rem;
+  }
+}
