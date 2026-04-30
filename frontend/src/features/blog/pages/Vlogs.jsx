@@ -7,6 +7,10 @@ import "../../../styles/vlogs.css";
 export default function Vlogs() {
   const { isAuthenticated } = useAuth();
   const [activeCategory, setActiveCategory] = useState("All");
+<<<<<<< HEAD
+=======
+  const [searchQuery, setSearchQuery] = useState("");
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
   const navigate = useNavigate();
 
   const categories = [
@@ -16,9 +20,19 @@ export default function Vlogs() {
     "Food",
     "Nature",
     "Guides",
+<<<<<<< HEAD
     "Travel",
     "Lifestyle",
     "Photography",
+=======
+    "Wildlife",
+    "Backpacking",
+    "Luxury",
+    "Solo Travel",
+    "Road Trips",
+    "Photography",
+    "Other",
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
   ];
 
   return (
@@ -75,6 +89,11 @@ export default function Vlogs() {
               <input
                 type="text"
                 placeholder="Search stories..."
+<<<<<<< HEAD
+=======
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
                 style={{
                   border: "none",
                   background: "transparent",
@@ -91,7 +110,11 @@ export default function Vlogs() {
       {/* Main Grid */}
       <section className="vlogs-main">
         <div className="container">
+<<<<<<< HEAD
           <FeaturedVlogs category={activeCategory} />
+=======
+          <FeaturedVlogs category={activeCategory} searchQuery={searchQuery} />
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
         </div>
       </section>
     </div>

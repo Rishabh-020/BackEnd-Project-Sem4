@@ -6,17 +6,12 @@ import React, {
   useState,
 } from "react";
 import useUser from "../hooks/useUser";
+import { toast, Toaster } from "react-hot-toast";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const auth = useUser();
-
-  const [toast, setToast] = useState({
-    show: false,
-    message: "",
-    type: "success",
-  });
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
@@ -26,10 +21,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const triggerToast = useCallback((message, type = "success") => {
-    setToast({ show: true, message, type });
-    setTimeout(() => {
-      setToast({ show: false, message: "", type: "success" });
-    }, 3000);
+    if (type === "success") {
+      toast.success(message, {
+        style: {
+          background: "#111827",
+          color: "#fff",
+          borderRadius: "12px",
+          border: "1px solid #374151",
+        },
+        iconTheme: {
+          primary: "#4361ee",
+          secondary: "#fff",
+        },
+      });
+    } else {
+      toast.error(message, {
+        style: {
+          background: "#111827",
+          color: "#fff",
+          borderRadius: "12px",
+          border: "1px solid #374151",
+        },
+      });
+    }
   }, []);
 
   const initiateLogout = useCallback(() => {
@@ -40,7 +54,6 @@ export const AuthProvider = ({ children }) => {
     await auth.logout();
     setShowLogoutModal(false);
     triggerToast("Logged out successfully", "success");
-    // Hard refresh or redirect can be done by component, but state updates immediately.
   };
 
   const cancelLogout = () => {
@@ -67,10 +80,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={value}>
       {children}
 
-      {/* Global Toast */}
-      {toast.show && (
-        <div className={`toast ${toast.type}`}>{toast.message}</div>
-      )}
+      <Toaster position="top-right" reverseOrder={false} />
 
       {/* Global Logout Confirm Modal */}
       {showLogoutModal && (

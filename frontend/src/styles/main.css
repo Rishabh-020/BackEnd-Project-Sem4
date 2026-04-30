@@ -23,6 +23,10 @@
     --hero-overlay: rgba(0, 0, 0, 0.4);
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
+=======
+    --scrollbar-thumb: #cbd5e1; /* Soft Gray */
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
     
     /* Aliases used in the codebase */
     --dark: var(--text-color);
@@ -41,6 +45,10 @@ body.dark-mode {
     --hero-overlay: rgba(0, 0, 0, 0.7);
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+<<<<<<< HEAD
+=======
+    --scrollbar-thumb: #1e293b; /* Deeper Darkish Slate */
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
     
     /* Aliases mapped for dark mode */
     --dark: var(--text-color);
@@ -56,6 +64,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+<<<<<<< HEAD
 /* Custom Sleek Scrollbar for the whole website */
 ::-webkit-scrollbar {
     width: 8px;
@@ -78,6 +87,44 @@ body {
 html {
     scrollbar-width: thin;
     scrollbar-color: var(--pill-bg) transparent;
+=======
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px; /* For horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Scrollbar for Light Mode */
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1 !important;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+/* Scrollbar for Dark Mode - Forced Darkish */
+body.dark-mode::-webkit-scrollbar-thumb,
+body.dark-mode *::-webkit-scrollbar-thumb {
+    background: #1e293b !important; /* Deep Dark Slate */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    filter: brightness(0.8);
+}
+
+/* Firefox Support */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent !important;
+}
+
+body.dark-mode {
+    scrollbar-color: #1e293b transparent !important;
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
 }
 
 main {

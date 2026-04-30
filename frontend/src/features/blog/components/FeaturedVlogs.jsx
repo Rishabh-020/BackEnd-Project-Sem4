@@ -4,7 +4,15 @@ import { useAuth } from "../../auth/context/AuthContext";
 import postService from "../services/postService";
 import VlogModal from "./VlogModal";
 
+<<<<<<< HEAD
 export default function FeaturedVlogs({ category = "All", showTitle = false }) {
+=======
+export default function FeaturedVlogs({
+  category = "All",
+  searchQuery = "",
+  showTitle = false,
+}) {
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
   const [vlogs, setVlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState(null);
@@ -26,8 +34,19 @@ export default function FeaturedVlogs({ category = "All", showTitle = false }) {
     fetchPosts();
   }, []);
 
+<<<<<<< HEAD
   const filteredVlogs =
     category === "All" ? vlogs : vlogs.filter((v) => v.category === category);
+=======
+  const filteredVlogs = vlogs.filter((v) => {
+    const matchesCategory = category === "All" || v.category === category;
+    const matchesSearch =
+      v.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.shortDescription?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.category?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
 
   function openModal(id) {
     if (!user) {
@@ -85,14 +104,23 @@ export default function FeaturedVlogs({ category = "All", showTitle = false }) {
 
               <div className="vlog-content">
                 <div className="vlog-date">
+<<<<<<< HEAD
                   <i className="far fa-calendar-alt"></i>
+=======
+                  <i className="fas fa-map-marker-alt"></i>{" "}
+                  {v.location || "Global"}
+                  <span style={{ margin: "0 0.5rem" }}>•</span>
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
                   <span>
                     {v.createdAt
                       ? new Date(v.createdAt).toLocaleDateString()
                       : "May 12, 2024"}
                   </span>
+<<<<<<< HEAD
                   <span style={{ margin: "0 0.5rem" }}>•</span>
                   <span>5 min read</span>
+=======
+>>>>>>> fee9ed306db09568d08e3253ddae79d78b4028aa
                 </div>
 
                 <h3>{v.title}</h3>

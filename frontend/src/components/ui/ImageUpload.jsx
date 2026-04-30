@@ -176,22 +176,70 @@ export default function ImageUpload({ onUploadSuccess, currentImage }) {
       )}
 
       {currentImage && (
-        <div
-          style={{
-            marginTop: "1rem",
-            borderRadius: "12px",
-            overflow: "hidden",
-            height: "100px",
-            width: "100%",
-            border: "1px solid var(--border-color)",
-          }}
-        >
-          <img
-            src={currentImage}
-            alt="Preview"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onError={(e) => (e.target.style.display = "none")}
-          />
+        <div style={{ marginTop: "1.5rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: "700",
+                color: "var(--text-color)",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+              }}
+            >
+              <i className="far fa-image" style={{ marginRight: "0.5rem" }}></i>{" "}
+              Preview
+            </span>
+            <button
+              type="button"
+              onClick={() => onUploadSuccess("")}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#ff4d4d",
+                cursor: "pointer",
+                fontSize: "0.8rem",
+                fontWeight: "600",
+              }}
+            >
+              Remove
+            </button>
+          </div>
+          <div
+            style={{
+              borderRadius: "15px",
+              overflow: "hidden",
+              height: "350px",
+              width: "100%",
+              border: "2px solid var(--border-color)",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+              position: "relative",
+              background: "#0a0a0a",
+            }}
+          >
+            <img
+              src={currentImage}
+              alt="Preview"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                objectPosition: "center",
+                display: "block",
+              }}
+              onError={(e) => {
+                e.target.style.display = "none";
+                setError("Image URL is invalid or inaccessible.");
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -1,10 +1,14 @@
 import { useState } from "react";
+import contactService from "../../../services/contactService";
 
 // Hook for contact form state and submission
-// When backend is ready, replace the setTimeout with:
-// const res = await fetch("/api/contact", { method: "POST", body: JSON.stringify(form) });
 export function useContact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,22 +23,16 @@ export function useContact() {
     setLoading(true);
 
     try {
-      // TODO: Replace with real API call
-      // const res = await fetch("/api/contact", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(form),
-      // });
-      // if (!res.ok) throw new Error("Failed to send");
-
-      // Simulated delay for now
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await contactService.sendContactMessage(form);
 
       setSent(true);
-      setForm({ name: "", email: "", message: "" });
-      setTimeout(() => setSent(false), 4000);
+      setForm({ name: "", email: "", subject: "", message: "" });
+
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => setSent(false), 5000);
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      console.error("Submission error:", err);
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

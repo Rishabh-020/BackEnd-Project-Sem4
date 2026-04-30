@@ -102,12 +102,10 @@ export const deletePost = async (req, res) => {
 
     // Make sure user is post owner
     if (post.author.toString() !== req.userId && req.userRole !== "admin") {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Not authorized to delete this post",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to delete this post",
+      });
     }
 
     await post.deleteOne();
@@ -133,12 +131,10 @@ export const updatePost = async (req, res) => {
 
     // Make sure user is post owner
     if (post.author.toString() !== req.userId && req.userRole !== "admin") {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Not authorized to update this post",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to update this post",
+      });
     }
 
     post = await Post.findByIdAndUpdate(req.params.id, req.body, {

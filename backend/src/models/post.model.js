@@ -27,6 +27,10 @@ const postSchema = new mongoose.Schema(
       required: [true, "Please add a short description"],
       maxlength: [200, "Description cannot be more than 200 characters"],
     },
+    location: {
+      type: String,
+      required: [true, "Please add a location"],
+    },
     category: {
       type: String,
       required: [true, "Please specify a category"],
@@ -39,6 +43,12 @@ const postSchema = new mongoose.Schema(
         "Travel",
         "Lifestyle",
         "Photography",
+        "Wildlife",
+        "Backpacking",
+        "Luxury",
+        "Solo Travel",
+        "Road Trips",
+        "Other",
       ],
     },
     status: {

@@ -96,7 +96,6 @@ export const useUser = () => {
   const fetchUserData = useCallback(async () => {
     const currentToken = Cookies.get("token");
     if (!currentToken) return null;
-    
     setLoading(true);
     try {
       const response = await authApi.getMe(currentToken);
@@ -116,25 +115,28 @@ export const useUser = () => {
     }
   }, [logout]);
 
-  const updateProfile = useCallback(async (profileData) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await authApi.updateProfile(token, profileData);
-      if (response.success && response.user) {
-        setUser(response.user);
-        return response;
-      } else {
-        setError(response.message);
-        return response;
+  const updateProfile = useCallback(
+    async (profileData) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await authApi.updateProfile(token, profileData);
+        if (response.success && response.user) {
+          setUser(response.user);
+          return response;
+        } else {
+          setError(response.message);
+          return response;
+        }
+      } catch (err) {
+        setError(err.message);
+        throw err;
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+    },
+    [token],
+  );
 
   return {
     user,

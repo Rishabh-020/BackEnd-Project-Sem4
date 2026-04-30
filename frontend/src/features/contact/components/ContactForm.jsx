@@ -3,7 +3,8 @@ import { useContact } from "../hooks/useContact";
 import "../../../styles/contact.css";
 
 export default function ContactForm() {
-  const { form, sent, loading, handleChange, handleSubmit } = useContact();
+  const { form, sent, loading, error, handleChange, handleSubmit } =
+    useContact();
 
   return (
     <div className="contact-page">
@@ -85,6 +86,22 @@ export default function ContactForm() {
 
             {/* Right Column: Form */}
             <div className="contact-form-col">
+              {error && (
+                <div
+                  className="error-message"
+                  style={{
+                    background: "#fff5f5",
+                    color: "#c53030",
+                    border: "1px solid #feb2b2",
+                    padding: "1rem",
+                    borderRadius: "8px",
+                    marginBottom: "1.5rem",
+                  }}
+                >
+                  <strong>⚠️ Error:</strong> {error}
+                </div>
+              )}
+
               {sent ? (
                 <div
                   className="success-message"
@@ -113,7 +130,7 @@ export default function ContactForm() {
                 <form onSubmit={handleSubmit}>
                   <div className="form-row">
                     <div className="form-item">
-                      <label>First Name</label>
+                      <label>Full Name</label>
                       <input
                         type="text"
                         name="name"
@@ -142,6 +159,8 @@ export default function ContactForm() {
                       type="text"
                       name="subject"
                       placeholder="Booking Inquiry"
+                      value={form.subject}
+                      onChange={handleChange}
                     />
                   </div>
 
